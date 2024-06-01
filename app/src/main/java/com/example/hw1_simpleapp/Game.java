@@ -1,8 +1,11 @@
 package com.example.hw1_simpleapp;
 
-import java.util.Random;
+import android.util.Log;
+import android.util.Pair;
 
+import java.util.Random;
 import java.util.Arrays;
+import java.util.Vector;
 
 public class Game {
     private int mScore, mBest;
@@ -37,9 +40,14 @@ public class Game {
     }
 
     public int createRandomSquare() {
-        int i = mRandom.nextInt(4);
-        int j = mRandom.nextInt(4);
-        mBoard[i][j] = 2;
-        return i*4 + j;
+        Vector<Integer> empties = new Vector<>();
+        for(int i = 0; i < 4; ++i)
+            for(int j = 0; j < 4; ++j) if (mBoard[i][j] == 0)
+                empties.add(i*4 + j);
+        if (empties.isEmpty()) return -1;
+        int index = empties.get(mRandom.nextInt(empties.size()));
+        mBoard[index/4][index%4] = 2;
+        Log.d("[Game]", "New position: " + index);
+        return index;
     }
 }

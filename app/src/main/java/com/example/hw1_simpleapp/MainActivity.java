@@ -7,9 +7,11 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private Game mGame;
     private static int MAX_COLOR = Color.rgb(159, 50, 0); // orange
     private static int START_COLOR = Color.argb(32, 238, 228, 218); // low
-    Vector<TextView> mSquareList;
+    GridLayout mBoard;
+    private GestureDetectorCompat detector;
+    OnSwipeListener onSwipeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +41,36 @@ public class MainActivity extends AppCompatActivity {
         });
 
         initBoardDisplay();
-    }
 
+        OnSwipeListener onSwipeListener = new OnSwipeListener() {
+            @Override
+            public boolean onSwipe(Direction direction) {
+                return super.onSwipe(direction);
+            }
+        };
+
+        detector = new GestureDetectorCompat(getApplicationContext(), onSwipeListener);
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_UP:
-                int squareID = mGame.createRandomSquare();
-                updateSquare(squareID);
-            default:
-
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            int id = mGame.createRandomSquare();
+            if (id != -1) updateSquare(id);
         }
-        return super.onTouchEvent(event);
+        return detector.onTouchEvent(event);
     }
+//    public boolean onTouchEvent(MotionEvent event) {
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_UP:
+//                int squareID = mGame.createRandomSquare();
+//                updateSquare(squareID);
+//            case MotionEvent.ACTION_DOWN:
+//        }
+//        return super.onTouchEvent(event);
+//    }
 
     void updateSquare(int id) {
-        TextView square = mSquareList.get(id);
+        TextView square = (TextView)mBoard.getChildAt(id);
         int value = mGame.getSquare(id/4, id%4);
         int color = getColorByValue(value);
 
@@ -68,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
     void initBoardDisplay() {
         mGame = new Game();
-        mSquareList = new Vector<>();
         setTextById(R.id.score_box, mGame.getScore());
         setTextById(R.id.best_box, mGame.getBest());
         drawBoardSquares();
@@ -80,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void drawBoardSquares() {
-        GridLayout mainGrid = findViewById(R.id.board);
-        mainGrid.removeAllViews();
+        mBoard = findViewById(R.id.board);
+        mBoard.removeAllViews();
         int margin = 10;
 
         for(int row = 0; row < 4; ++row) {
@@ -96,8 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 params.height = dpToPx(65);
                 params.setMargins(margin, margin, margin, margin);
 
-                mainGrid.addView(square, params);
-                mSquareList.add(square);
+                mBoard.addView(square, params);
 //                System.out.println(row + " " + col + " " + color)
             }
         }
