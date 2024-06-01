@@ -11,6 +11,7 @@ import androidx.core.view.GestureDetectorCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -41,10 +42,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         initBoardDisplay();
-
         OnSwipeListener onSwipeListener = new OnSwipeListener() {
             @Override
             public boolean onSwipe(Direction direction) {
+                switch (direction) {
+                    case up:
+                        Log.d("Swipe", "Up");
+                        mGame.mergeUp();
+                        break;
+                    case down:
+                        Log.d("Swipe", "Down");
+                        mGame.mergeDown();
+                        break;
+                    case left:
+                        Log.d("Swipe", "Left");
+                        mGame.mergeLeft();
+                        break;
+                    case right:
+                        Log.d("Swipe", "Right");
+                        mGame.mergeRight();
+                        break;
+                }
+                mGame.createRandomSquare();
+                for(int i = 0; i < 16; ++i)
+                    updateSquare(i);
                 return super.onSwipe(direction);
             }
         };
@@ -53,21 +74,8 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            int id = mGame.createRandomSquare();
-            if (id != -1) updateSquare(id);
-        }
         return detector.onTouchEvent(event);
     }
-//    public boolean onTouchEvent(MotionEvent event) {
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_UP:
-//                int squareID = mGame.createRandomSquare();
-//                updateSquare(squareID);
-//            case MotionEvent.ACTION_DOWN:
-//        }
-//        return super.onTouchEvent(event);
-//    }
 
     void updateSquare(int id) {
         TextView square = (TextView)mBoard.getChildAt(id);
@@ -77,7 +85,14 @@ public class MainActivity extends AppCompatActivity {
         square.setBackgroundColor(color);
         if (value > 0) {
             square.setText(String.valueOf(value));
+        } else {
+            square.setText("");
         }
+    }
+
+    void createRandomSquare() {
+        int id = mGame.createRandomSquare();
+        if (id != -1) updateSquare(id);
     }
 
     public void startNewGame(View view) {
@@ -89,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         setTextById(R.id.score_box, mGame.getScore());
         setTextById(R.id.best_box, mGame.getBest());
         drawBoardSquares();
+        createRandomSquare();
     }
 
     void setTextById(int id, int value) {
