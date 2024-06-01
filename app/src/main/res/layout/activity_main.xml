@@ -75,6 +75,47 @@
             android:rowCount="4"
             android:layout_gravity="center">
         </GridLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginVertical="20dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text = "Author info"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                android:textAlignment="center"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:text="dmnhut22@apcs.fitus.edu.vn"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/gray"
+                android:onClick="onClickEmail"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/gray"
+                android:text="+84949748447"
+                android:textColor="@color/black"
+                android:onClick="onClickTelephone"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/gray"
+                android:text="bjminhnhut.github.io"
+                android:textColor="@color/black"
+                android:onClick="onClickWebURL"/>
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

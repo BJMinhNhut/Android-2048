@@ -1,7 +1,9 @@
 package com.example.hw1_simpleapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -16,6 +18,7 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
@@ -147,6 +150,24 @@ public class MainActivity extends AppCompatActivity {
         int g = (int)(200 * (1-ratio*0.7));
         int b = (int)(200 * (1-ratio));
         return Color.rgb(r, g, b);
+    }
+
+    public void onClickWebURL(View view) {
+        String url = ((Button)view).getText().toString();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + url));
+        startActivity(intent);
+    }
+
+    public void onClickTelephone(View view) {
+        String number = ((Button)view).getText().toString();
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
+        startActivity(intent);
+    }
+
+    public void onClickEmail(View view) {
+        String email = ((Button)view).getText().toString();
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + email));
+        startActivity(intent);
     }
 
     private int dpToPx(int dp) {
