@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        mGame = new Game();
         initBoardDisplay();
         OnSwipeListener onSwipeListener = new OnSwipeListener() {
             @Override
@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                         mGame.mergeRight();
                         break;
                 }
+                setTextById(R.id.score_box, mGame.getScore());
+                setTextById(R.id.best_box, mGame.getBest());
                 mGame.createRandomSquare();
                 for(int i = 0; i < 16; ++i)
                     updateSquare(i);
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void initBoardDisplay() {
-        mGame = new Game();
+        mGame.clearBoard();
         setTextById(R.id.score_box, mGame.getScore());
         setTextById(R.id.best_box, mGame.getBest());
         drawBoardSquares();

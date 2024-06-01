@@ -58,6 +58,7 @@ public class Game {
             for(int val : row) if (val > 0) {
                 if (val == match) {
                     values.add(2*val);
+                    addScore(2*val);
                     match = 0;
                 } else {
                     if (match > 0) values.add(match);
@@ -118,5 +119,10 @@ public class Game {
 
         for(int i = 0; i < 4; ++i)
             mBoard[i] = Arrays.copyOf(temp[i], temp[i].length);
+    }
+
+    private void addScore(int score) {
+        mScore += score;
+        mBest = Math.max(mBest, mScore);
     }
 }
